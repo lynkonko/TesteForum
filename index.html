@@ -19,8 +19,8 @@
             --border-light: #E0D4F0; --text-dark: #1E1233; --text-body: #3A2E4D; --text-muted: #7A6E8A;
             --error: #D42B2B; --success: #2D8E5B;
             --radius: 14px; --radius-sm: 8px;
-            --shadow-sm: 0 2px 8px rgba(59,30,99,0.06);
             --shadow: 0 8px 32px rgba(59,30,99,0.10);
+            --shadow-sm: 0 2px 8px rgba(59,30,99,0.06);
             --shadow-lg: 0 16px 48px rgba(59,30,99,0.16);
             --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             --safe-top: env(safe-area-inset-top, 0px);
@@ -33,16 +33,18 @@
             display: flex; align-items: center; justify-content: center;
             padding: 12px; padding-top: calc(12px + var(--safe-top)); padding-bottom: calc(12px + var(--safe-bottom));
             color: var(--text-body); font-size: 16px; line-height: 1.5;
-            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
         }
         @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
         @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+        @keyframes spin { to{transform:rotate(360deg)} }
         .fade-in { animation: fadeInUp 0.45s ease-out forwards; }
         .shake { animation: shake 0.35s ease; }
+
         .view { display: none; width: 100%; max-width: 500px; }
         .view.active { display: block; }
-        .view-event.active { max-width: 960px; animation: fadeInUp 0.45s ease-out forwards; }
+
         .card { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; animation: fadeInUp 0.45s ease-out; }
         .card-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
@@ -52,8 +54,9 @@
         .card-header h1 { font-size: 1.45rem; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
         .card-header p { font-size: 0.88rem; opacity: 0.8; font-weight: 400; }
         .card-body { padding: 24px; }
-        .form-group { margin-bottom: 20px; position: relative; }
-        .form-group label { display:block; font-size:0.85rem; font-weight:600; color:var(--text-dark); margin-bottom:7px; letter-spacing:0.2px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display:block; font-size:0.85rem; font-weight:600; color:var(--text-dark); margin-bottom:7px; }
         .form-group label .required { color: var(--accent); margin-left: 2px; }
         .form-group input[type="text"], .form-group input[type="email"] {
             width:100%; padding:14px 16px; border:1.5px solid var(--border-light); border-radius:var(--radius-sm);
@@ -64,6 +67,7 @@
         .form-group input.error { border-color: var(--error); background:#FEF5F5; }
         .form-group .error-msg { color:var(--error); font-size:0.78rem; margin-top:5px; display:none; }
         .form-group input.error ~ .error-msg { display: block; }
+
         .consent-box { background:var(--bg-highlight); border:1.5px solid var(--border-light); border-radius:var(--radius-sm); padding:16px; margin-bottom:20px; }
         .consent-box .consent-label { display:flex; align-items:flex-start; gap:12px; cursor:pointer; font-size:0.86rem; line-height:1.6; color:var(--text-body); }
         .consent-box input[type="checkbox"] { width:22px; height:22px; min-width:22px; margin-top:2px; accent-color:var(--primary); flex-shrink:0; cursor:pointer; }
@@ -71,51 +75,61 @@
         .consent-error { color:var(--error); font-size:0.78rem; margin-top:6px; display:none; }
         .consent-box.error ~ .consent-error { display: block; }
         .privacy-link { color:var(--primary); text-decoration:underline; font-weight:700; cursor:pointer; }
+
         .btn-primary {
             width:100%; padding:16px; border:none; border-radius:var(--radius-sm);
             background: var(--accent); color:#fff;
-            font-size:1rem; font-weight:700; cursor:pointer; transition:var(--transition); letter-spacing:0.3px;
+            font-size:1rem; font-weight:700; cursor:pointer; transition:var(--transition);
             min-height:52px; -webkit-appearance:none; appearance:none;
         }
         .btn-primary:active { background:var(--accent-hover); transform:scale(0.98); }
-        .event-header {
-            background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding:20px; color:#fff; border-radius:var(--radius) var(--radius) 0 0;
-            display:flex; flex-direction:column; gap:14px;
+        .btn-secondary {
+            width:100%; padding:14px; border:1.5px solid var(--border-light); border-radius:var(--radius-sm);
+            background:var(--bg-light); color:var(--text-dark);
+            font-size:0.92rem; font-weight:600; cursor:pointer; transition:var(--transition);
+            min-height:48px; margin-top:10px;
         }
-        .event-header-top { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
-        .event-header .welcome { font-size: 1rem; font-weight: 500; }
-        .event-header .welcome strong { color: var(--accent); font-weight: 700; }
-        .event-header-actions { display:flex; align-items:center; gap:8px; }
-        .event-header .badge {
-            background:rgba(255,255,255,0.12); padding:6px 14px; border-radius:20px; font-size:0.78rem;
-            font-weight:600; letter-spacing:0.5px; border:1px solid rgba(255,255,255,0.15); white-space:nowrap;
+        .btn-secondary:active { background:var(--border-light); }
+
+        /* CONFIRMATION VIEW */
+        .confirm-icon {
+            width:64px; height:64px; border-radius:50%; background:var(--success);
+            display:flex; align-items:center; justify-content:center; margin:0 auto 20px;
         }
-        .badge-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:#4ADE80; margin-right:6px; }
-        .btn-back {
-            display:inline-flex; align-items:center; gap:6px;
-            background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.18);
-            color:#fff; padding:8px 16px; border-radius:var(--radius-sm);
-            font-size:0.82rem; font-weight:600; cursor:pointer; transition:var(--transition);
-            min-height:40px; white-space:nowrap;
+        .confirm-icon svg { width:32px; height:32px; fill:#fff; }
+        .confirm-title { font-size:1.2rem; font-weight:700; color:var(--text-dark); text-align:center; margin-bottom:4px; }
+        .confirm-subtitle { font-size:0.86rem; color:var(--text-muted); text-align:center; margin-bottom:24px; }
+
+        .user-data-card {
+            background:var(--bg-highlight); border:1px solid var(--border-light);
+            border-radius:var(--radius-sm); padding:16px; margin-bottom:24px;
         }
-        .btn-back:active { background:rgba(255,255,255,0.25); }
-        .btn-back svg { width:15px; height:15px; fill:currentColor; flex-shrink:0; }
-        .slido-container { background:#fff; padding:0; border-radius:0 0 var(--radius) var(--radius); }
-        .slido-container iframe { display:block; border:none; width:100%; min-height:480px; height:65vh; height:65dvh; }
-        .user-info-bar {
-            background:var(--bg-light); padding:14px 20px; display:flex; flex-direction:column; gap:8px;
-            font-size:0.84rem; color:var(--text-muted); border-bottom:1px solid var(--border-light);
+        .user-data-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; }
+        .user-data-row:not(:last-child) { border-bottom:1px solid var(--border-light); }
+        .user-data-label { font-size:0.8rem; color:var(--text-muted); font-weight:500; }
+        .user-data-value { font-size:0.88rem; color:var(--text-dark); font-weight:600; text-align:right; word-break:break-all; max-width:60%; }
+
+        .redirect-status { text-align:center; margin-bottom:20px; }
+        .redirect-status .spinner {
+            display:inline-block; width:20px; height:20px; border:2.5px solid var(--border-light);
+            border-top-color:var(--primary); border-radius:50%; animation:spin 0.8s linear infinite;
+            vertical-align:middle; margin-right:8px;
         }
-        .user-info-bar .info-row { display:flex; align-items:center; gap:8px; }
-        .user-info-bar .info-row b { color: var(--text-dark); font-weight: 600; }
-        .info-icon { width:16px; height:16px; fill:var(--text-muted); flex-shrink:0; }
+        .redirect-status span { font-size:0.88rem; color:var(--text-muted); font-weight:500; }
+        .new-register-link {
+            display:block; text-align:center; margin-top:16px; font-size:0.82rem;
+            color:var(--text-muted); cursor:pointer; padding:8px;
+        }
+        .new-register-link:active { color:var(--primary); }
+
+        /* MODALS */
         .modal-overlay {
             display:none; position:fixed; inset:0; background:rgba(30,18,51,0.80); z-index:1000;
             align-items:flex-end; justify-content:center; padding:0;
             backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
         }
         .modal-overlay.active { display: flex; }
+
         .admin-panel {
             background:#fff; border-radius:var(--radius) var(--radius) 0 0; width:100%; max-height:92vh; max-height:92dvh;
             overflow:auto; box-shadow:var(--shadow-lg); animation:fadeInUp 0.35s ease-out;
@@ -150,6 +164,7 @@
         .admin-table tr:active td { background: var(--bg-highlight); }
         .admin-table th:first-child { border-radius: var(--radius-sm) 0 0 0; }
         .admin-table th:last-child { border-radius: 0 var(--radius-sm) 0 0; }
+
         .password-modal {
             background:#fff; border-radius:var(--radius) var(--radius) 0 0; width:100%;
             box-shadow:var(--shadow-lg); animation:fadeInUp 0.35s ease-out; overflow:hidden;
@@ -177,6 +192,7 @@
         .btn-pw-submit:active { background:var(--accent-hover); }
         .btn-pw-cancel { background: #F0ECF5; color: var(--text-dark); }
         .btn-pw-cancel:active { background: #E0D4F0; }
+
         .privacy-modal {
             background:#fff; border-radius:var(--radius) var(--radius) 0 0; width:100%;
             max-height:92vh; max-height:92dvh; overflow:hidden; display:flex; flex-direction:column;
@@ -217,6 +233,7 @@
             min-height:50px; min-width:160px;
         }
         .btn-understood:active { background:var(--accent-hover); }
+
         .toast {
             position:fixed; top:calc(12px + var(--safe-top)); left:12px; right:12px;
             background:var(--success); color:#fff; padding:16px 20px; border-radius:var(--radius-sm);
@@ -224,6 +241,7 @@
             transform:translateY(-120%); transition:transform 0.4s ease; z-index:2000; text-align:center;
         }
         .toast.show { transform: translateY(0); }
+
         .footer-note {
             text-align:center; margin-top:20px; padding:0 8px;
             font-size:0.76rem; color:rgba(255,255,255,0.35); letter-spacing:0.2px; line-height:1.8;
@@ -240,26 +258,23 @@
             .card-header { padding: 40px 32px 28px; }
             .card-header h1 { font-size: 1.6rem; }
             .card-body { padding: 32px; }
-            .event-header { padding: 22px 28px; flex-direction: row; align-items: center; justify-content: space-between; }
-            .event-header-top { width: 100%; }
-            .user-info-bar { flex-direction: row; gap: 24px; padding: 14px 28px; }
-            .slido-container iframe { min-height: 560px; height: 70vh; }
             .modal-overlay { align-items: center; padding: 20px; }
             .admin-panel { border-radius: var(--radius); max-width: 920px; max-height: 85vh; padding-bottom: 0; }
             .admin-header { border-radius: var(--radius) var(--radius) 0 0; }
             .password-modal { border-radius: var(--radius); max-width: 400px; padding-bottom: 0; }
             .privacy-modal { border-radius: var(--radius); max-width: 560px; max-height: 85vh; }
             .btn-primary:hover { background:var(--accent-hover); transform:translateY(-1px); box-shadow:0 4px 16px rgba(242,101,34,0.30); }
-            .btn-back:hover { background:rgba(255,255,255,0.20); border-color:rgba(255,255,255,0.30); }
+            .btn-secondary:hover { background:var(--border-light); }
             .btn-export:hover { background: var(--accent-hover); }
             .btn-close-modal:hover { background: rgba(255,255,255,0.22); }
             .btn-pw-submit:hover { background:var(--accent-hover); }
             .btn-pw-cancel:hover { background: #E0D4F0; }
-            .btn-understood:hover { background:var(--accent-hover); box-shadow:0 4px 16px rgba(242,101,34,0.25); }
+            .btn-understood:hover { background:var(--accent-hover); }
             .privacy-modal-close:hover { background: rgba(255,255,255,0.25); }
             .admin-table tr:hover td { background: var(--bg-highlight); }
             .footer-link:hover { color:#fff; text-decoration:underline; }
             .privacy-link:hover { color: var(--accent); }
+            .new-register-link:hover { color:var(--primary); text-decoration:underline; }
         }
         @media (max-width: 380px) {
             .card-header h1 { font-size: 1.25rem; }
@@ -312,41 +327,44 @@
         </p>
     </div>
 
-    <div id="viewEvent" class="view view-event">
+    <div id="viewConfirm" class="view">
         <div class="card fade-in">
-            <div class="event-header">
-                <div class="event-header-top">
-                    <div class="welcome">Bem-vindo(a), <strong id="welcomeName"></strong></div>
-                    <div class="event-header-actions">
-                        <div class="badge"><span class="badge-dot"></span>Ao Vivo</div>
-                        <button class="btn-back" onclick="goBack()" title="Sair">
-                            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-                            Sair
-                        </button>
+            <div class="card-header">
+                <h1>F&oacute;rum DII 2026</h1>
+                <p>Sess&atilde;o interativa</p>
+            </div>
+            <div class="card-body">
+                <div class="confirm-icon">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                </div>
+                <div class="confirm-title" id="confirmTitle">Registro confirmado</div>
+                <div class="confirm-subtitle" id="confirmSubtitle">Seus dados foram salvos com sucesso</div>
+
+                <div class="user-data-card">
+                    <div class="user-data-row">
+                        <span class="user-data-label">Nome</span>
+                        <span class="user-data-value" id="confirmName"></span>
+                    </div>
+                    <div class="user-data-row">
+                        <span class="user-data-label">E-mail</span>
+                        <span class="user-data-value" id="confirmEmail"></span>
+                    </div>
+                    <div class="user-data-row">
+                        <span class="user-data-label">CRM</span>
+                        <span class="user-data-value" id="confirmCRM"></span>
                     </div>
                 </div>
-            </div>
-            <div class="user-info-bar">
-                <div class="info-row">
-                    <svg class="info-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                    <b id="infoEmail"></b>
+
+                <div class="redirect-status" id="redirectStatus">
+                    <span class="spinner"></span>
+                    <span id="redirectText">Entrando no evento em <strong id="countdown">3</strong>s...</span>
                 </div>
-                <div class="info-row">
-                    <svg class="info-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
-                    <b id="infoCRM"></b>
-                </div>
-                <div class="info-row">
-                    <svg class="info-icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10S22 17.52 22 12 17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
-                    <b id="infoTime"></b>
-                </div>
-            </div>
-            <div class="slido-container">
-                <iframe id="slidoFrame" src="" allow="clipboard-write" title="Slido"></iframe>
+
+                <button class="btn-primary" onclick="redirectToSlido()">Entrar agora</button>
+                <button class="btn-secondary" onclick="newRegister()">Novo registro</button>
             </div>
         </div>
-        <p class="footer-note" style="margin-top:14px;">
-            Identificado como <strong id="footerUser" style="color:rgba(255,255,255,0.55);"></strong>
-            <span class="footer-divider">|</span>
+        <p class="footer-note">
             <span class="footer-link" onclick="openPrivacy();">Pol&iacute;tica de Privacidade</span>
         </p>
     </div>
@@ -363,7 +381,7 @@
                     <div class="pw-error-msg" id="pwErrorMsg"></div>
                     <div class="pw-actions">
                         <button class="btn-pw-cancel" onclick="closePasswordModal()">Cancelar</button>
-                        <button class="btn-pw-submit" id="btnPwSubmit" onclick="submitPassword()">Entrar</button>
+                        <button class="btn-pw-submit" onclick="submitPassword()">Entrar</button>
                     </div>
                 </div>
                 <div id="pwBlockedArea" style="display:none;">
@@ -429,7 +447,6 @@
             <div class="privacy-modal-body">
                 <h3>Sobre esta Pol&iacute;tica</h3>
                 <p>Esta Pol&iacute;tica de Privacidade descreve de forma transparente como os dados pessoais dos participantes s&atilde;o coletados e utilizados neste evento interativo, em conformidade com a <strong>LGPD (Lei n&ordm; 13.709/2018)</strong>.</p>
-
                 <h3>Dados Coletados</h3>
                 <p>Para viabilizar sua participa&ccedil;&atilde;o, coletamos:</p>
                 <ul>
@@ -439,7 +456,6 @@
                     <li><strong>Registro de consentimento</strong> (data e hora)</li>
                     <li><strong>Dados de intera&ccedil;&atilde;o</strong> (registros de acesso e participa&ccedil;&atilde;o)</li>
                 </ul>
-
                 <h3>Finalidade</h3>
                 <p>Todos os dados coletados s&atilde;o utilizados <strong>exclusivamente</strong> para:</p>
                 <ul>
@@ -447,11 +463,9 @@
                     <li><strong>Melhoria da experi&ecirc;ncia em intera&ccedil;&otilde;es futuras</strong> &mdash; gerar relat&oacute;rios de engajamento para aprimorar os pr&oacute;ximos eventos</li>
                 </ul>
                 <p>N&atilde;o compartilhamos seus dados com terceiros para fins comerciais ou publicit&aacute;rios.</p>
-
                 <div class="highlight">
                     <strong>Seus direitos:</strong> O tratamento dos seus dados &eacute; baseado no seu consentimento livre e informado (Art. 7&ordm;, I da LGPD). Voc&ecirc; pode <strong>revogar seu consentimento a qualquer momento</strong> entrando em contato com a equipe organizadora do evento.
                 </div>
-
                 <p style="margin-top:20px; color:var(--text-muted); font-size:0.8rem; text-align:center;">
                     <em>&Uacute;ltima atualiza&ccedil;&atilde;o: Junho de 2026</em>
                 </p>
@@ -474,6 +488,8 @@
         var pwAttempts = 0;
         var pwBlocked = false;
         var blockTimer = null;
+        var redirectTimer = null;
+        var currentUser = null;
 
         function getDB() {
             try { return JSON.parse(localStorage.getItem(DB_KEY)) || []; }
@@ -486,23 +502,27 @@
         }
 
         var viewRegister = document.getElementById('viewRegister');
-        var viewEvent = document.getElementById('viewEvent');
+        var viewConfirm = document.getElementById('viewConfirm');
         var form = document.getElementById('registerForm');
         var fieldName = document.getElementById('fieldName');
         var fieldEmail = document.getElementById('fieldEmail');
         var fieldCRM = document.getElementById('fieldCRM');
         var consentCheck = document.getElementById('consentCheck');
         var consentBox = document.getElementById('consentBox');
-        var slidoFrame = document.getElementById('slidoFrame');
 
+        // Check returning user
         var lastUser = localStorage.getItem('evento_slido_current_user');
         if (lastUser) {
             try {
                 var user = JSON.parse(lastUser);
-                if (user && user.name && user.email) { showEventView(user); }
+                if (user && user.name && user.email) {
+                    currentUser = user;
+                    showConfirmView(user, true);
+                }
             } catch(e) {}
         }
 
+        // Form submit
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             var valid = true;
@@ -527,17 +547,21 @@
                 timestamp: new Date().toISOString(),
                 interactions: []
             };
+
             var existing = findByEmail(record.email);
             if (existing) {
-                showToast('Bem-vindo(a) de volta! Redirecionando...');
+                currentUser = existing;
                 localStorage.setItem('evento_slido_current_user', JSON.stringify(existing));
-                setTimeout(function() { showEventView(existing); }, 800);
+                logInteraction(existing.email, 'acesso_retorno');
+                showConfirmView(existing, true);
                 return;
             }
+
             addRecord(record);
+            currentUser = record;
             localStorage.setItem('evento_slido_current_user', JSON.stringify(record));
-            showToast('Registro realizado com sucesso!');
-            setTimeout(function() { showEventView(record); }, 600);
+            logInteraction(record.email, 'primeiro_acesso');
+            showConfirmView(record, false);
         });
 
         [fieldName, fieldEmail, fieldCRM].forEach(function(f) {
@@ -545,26 +569,58 @@
         });
         consentCheck.addEventListener('change', function() { consentBox.classList.remove('error'); });
 
-        function showEventView(user) {
+        // Show confirmation view
+        function showConfirmView(user, isReturning) {
             viewRegister.classList.remove('active');
-            viewEvent.classList.add('active');
-            document.getElementById('welcomeName').textContent = user.name.split(' ')[0];
-            document.getElementById('infoEmail').textContent = user.email;
-            document.getElementById('infoCRM').textContent = user.crm;
-            document.getElementById('infoTime').textContent = new Date().toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
-            document.getElementById('footerUser').textContent = user.name;
-            var slidoURL = SLIDO_BASE + '?user_name=' + encodeURIComponent(user.name) + '&user_email=' + encodeURIComponent(user.email);
-            slidoFrame.src = slidoURL;
-            logInteraction(user.email, 'acesso_evento');
+            viewConfirm.classList.add('active');
+
+            document.getElementById('confirmName').textContent = user.name;
+            document.getElementById('confirmEmail').textContent = user.email;
+            document.getElementById('confirmCRM').textContent = user.crm;
+
+            if (isReturning) {
+                document.getElementById('confirmTitle').textContent = 'Bem-vindo(a) de volta!';
+                document.getElementById('confirmSubtitle').textContent = 'Seus dados ja estao registrados';
+            } else {
+                document.getElementById('confirmTitle').textContent = 'Registro confirmado';
+                document.getElementById('confirmSubtitle').textContent = 'Seus dados foram salvos com sucesso';
+            }
+
+            // Auto-redirect countdown
+            var count = 3;
+            document.getElementById('countdown').textContent = count;
+            document.getElementById('redirectStatus').style.display = 'block';
+
+            if (redirectTimer) clearInterval(redirectTimer);
+            redirectTimer = setInterval(function() {
+                count--;
+                document.getElementById('countdown').textContent = count;
+                if (count <= 0) {
+                    clearInterval(redirectTimer);
+                    redirectToSlido();
+                }
+            }, 1000);
         }
 
-        window.goBack = function() {
+        // Redirect to Slido
+        window.redirectToSlido = function() {
+            if (redirectTimer) clearInterval(redirectTimer);
+            if (!currentUser) return;
+            var url = SLIDO_BASE
+                + '?user_name=' + encodeURIComponent(currentUser.name)
+                + '&user_email=' + encodeURIComponent(currentUser.email);
+            logInteraction(currentUser.email, 'redirecionado_slido');
+            window.location.href = url;
+        };
+
+        // New register
+        window.newRegister = function() {
+            if (redirectTimer) clearInterval(redirectTimer);
             localStorage.removeItem('evento_slido_current_user');
-            slidoFrame.src = '';
-            viewEvent.classList.remove('active');
+            currentUser = null;
+            viewConfirm.classList.remove('active');
             viewRegister.classList.add('active');
             form.reset();
-            showToast('Sessao encerrada.');
         };
 
         function logInteraction(email, type) {
@@ -585,12 +641,14 @@
         }
         window.showToast = showToast;
 
+        // Privacy
         window.openPrivacy = function() { document.getElementById('privacyOverlay').classList.add('active'); };
         window.closePrivacy = function() { document.getElementById('privacyOverlay').classList.remove('active'); };
         document.getElementById('privacyOverlay').addEventListener('click', function(e) {
             if (e.target === this) window.closePrivacy();
         });
 
+        // Password Modal
         function openPasswordModal() {
             var overlay = document.getElementById('passwordOverlay');
             overlay.classList.add('active');
@@ -632,12 +690,12 @@
                     pwBlocked = true;
                     document.getElementById('pwFormArea').style.display = 'none';
                     document.getElementById('pwBlockedArea').style.display = 'block';
-                    var countdown = BLOCK_SECONDS;
-                    document.getElementById('blockCountdown').textContent = countdown;
+                    var cd = BLOCK_SECONDS;
+                    document.getElementById('blockCountdown').textContent = cd;
                     blockTimer = setInterval(function() {
-                        countdown--;
-                        document.getElementById('blockCountdown').textContent = countdown;
-                        if (countdown <= 0) {
+                        cd--;
+                        document.getElementById('blockCountdown').textContent = cd;
+                        if (cd <= 0) {
                             clearInterval(blockTimer);
                             pwBlocked = false;
                             pwAttempts = 0;
