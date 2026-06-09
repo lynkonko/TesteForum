@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#3E1F63">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>F&oacute;rum DII 2026</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+        :root {
+            --primary: #5B2D8E; --primary-dark: #3E1F63; --primary-light: #7B3FA0;
+            --accent: #F26522; --accent-hover: #D9551A;
+            --bg-gradient-1: #2D1450; --bg-gradient-2: #4A2380; --bg-gradient-3: #5B2D8E;
+            --bg-card: #ffffff; --bg-light: #F7F3FC; --bg-highlight: #F3EDF9;
+            --border-light: #E0D4F0; --text-dark: #1E1233; --text-body: #3A2E4D; --text-muted: #7A6E8A;
+            --error: #D42B2B; --success: #2D8E5B;
+            --radius: 14px; --radius-sm: 8px;
+            --shadow-sm: 0 2px 8px rgba(59,30,99,0.06);
+            --shadow: 0 8px 32px rgba(59,30,99,0.10);
+            --shadow-lg: 0 16px 48px rgba(59,30,99,0.16);
+            --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(160deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 45%, var(--bg-gradient-3) 100%);
+            min-height: 100vh; min-height: 100dvh;
+            display: flex; align-items: center; justify-content: center;
+            padding: 12px; padding-top: calc(12px + var(--safe-top)); padding-bottom: calc(12px + var(--safe-bottom));
+            color: var(--text-body); font-size: 16px; line-height: 1.5;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+            -webkit-tap-highlight-color: transparent;
+        }
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+        .fade-in { animation: fadeInUp 0.45s ease-out forwards; }
+        .shake { animation: shake 0.35s ease; }
+        .view { display: none; width: 100%; max-width: 500px; }
+        .view.active { display: block; }
+        .view-event.active { max-width: 960px; animation: fadeInUp 0.45s ease-out forwards; }
+        .card { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; animation: fadeInUp 0.45s ease-out; }
+        .card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 36px 24px 28px; text-align: center; color: #fff; position: relative;
+        }
+        .card-header::after { content:''; position:absolute; bottom:-1px; left:0; right:0; height:16px; background:var(--bg-card); border-radius:50% 50% 0 0; }
+        .card-header h1 { font-size: 1.45rem; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+        .card-header p { font-size: 0.88rem; opacity: 0.8; font-weight: 400; }
+        .card-body { padding: 24px; }
+        .form-group { margin-bottom: 20px; position: relative; }
+        .form-group label { display:block; font-size:0.85rem; font-weight:600; color:var(--text-dark); margin-bottom:7px; letter-spacing:0.2px; }
+        .form-group label .required { color: var(--accent); margin-left: 2px; }
+        .form-group input[type="text"], .form-group input[type="email"] {
+            width:100%; padding:14px 16px; border:1.5px solid var(--border-light); border-radius:var(--radius-sm);
+            font-size:16px; color:var(--text-dark); transition:var(--transition); background:var(--bg-light);
+            -webkit-appearance: none; appearance: none;
+        }
+        .form-group input:focus { outline:none; border-color:var(--primary-light); background:#fff; box-shadow:0 0 0 3px rgba(91,45,142,0.10); }
+        .form-group input.error { border-color: var(--error); background:#FEF5F5; }
+        .form-group .error-msg { color:var(--error); font-size:0.78rem; margin-top:5px; display:none; }
+        .form-group input.error ~ .error-msg { display: block; }
+        .consent-box { background:var(--bg-highlight); border:1.5px solid var(--border-light); border-radius:var(--radius-sm); padding:16px; margin-bottom:20px; }
+        .consent-box .consent-label { display:flex; align-items:flex-start; gap:12px; cursor:pointer; font-size:0.86rem; line-height:1.6; color:var(--text-body); }
+        .consent-box input[type="checkbox"] { width:22px; height:22px; min-width:22px; margin-top:2px; accent-color:var(--primary); flex-shrink:0; cursor:pointer; }
+        .consent-box.error { border-color: var(--error); background: #FEF5F5; }
+        .consent-error { color:var(--error); font-size:0.78rem; margin-top:6px; display:none; }
+        .consent-box.error ~ .consent-error { display: block; }
+        .privacy-link { color:var(--primary); text-decoration:underline; font-weight:700; cursor:pointer; }
+        .btn-primary {
+            width:100%; padding:16px; border:none; border-radius:var(--radius-sm);
+            background: var(--accent); color:#fff;
+            font-size:1rem; font-weight:700; cursor:pointer; transition:var(--transition); letter-spacing:0.3px;
+            min-height:52px; -webkit-appearance:none; appearance:none;
+        }
+        .btn-primary:active { background:var(--accent-hover); transform:scale(0.98); }
+        .event-header {
+            background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding:20px; color:#fff; border-radius:var(--radius) var(--radius) 0 0;
+            display:flex; flex-direction:column; gap:14px;
+        }
+        .event-header-top { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+        .event-header .welcome { font-size: 1rem; font-weight: 500; }
+        .event-header .welcome strong { color: var(--accent); font-weight: 700; }
+        .event-header-actions { display:flex; align-items:center; gap:8px; }
+        .event-header .badge {
+            background:rgba(255,255,255,0.12); padding:6px 14px; border-radius:20px; font-size:0.78rem;
+            font-weight:600; letter-spacing:0.5px; border:1px solid rgba(255,255,255,0.15); white-space:nowrap;
+        }
+        .badge-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:#4ADE80; margin-right:6px; }
+        .btn-back {
+            display:inline-flex; align-items:center; gap:6px;
+            background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.18);
+            color:#fff; padding:8px 16px; border-radius:var(--radius-sm);
+            font-size:0.82rem; font-weight:600; cursor:pointer; transition:var(--transition);
+            min-height:40px; white-space:nowrap;
+        }
+        .btn-back:active { background:rgba(255,255,255,0.25); }
+        .btn-back svg { width:15px; height:15px; fill:currentColor; flex-shrink:0; }
+        .slido-container { background:#fff; padding:0; border-radius:0 0 var(--radius) var(--radius); }
+        .slido-container iframe { display:block; border:none; width:100%; min-height:480px; height:65vh; height:65dvh; }
+        .user-info-bar {
+            background:var(--bg-light); padding:14px 20px; display:flex; flex-direction:column; gap:8px;
+            font-size:0.84rem; color:var(--text-muted); border-bottom:1px solid var(--border-light);
+        }
+        .user-info-bar .info-row { display:flex; align-items:center; gap:8px; }
+        .user-info-bar .info-row b { color: var(--text-dark); font-weight: 600; }
+        .info-icon { width:16px; height:16px; fill:var(--text-muted); flex-shrink:0; }
+        .modal-overlay {
+            display:none; position:fixed; inset:0; background:rgba(30,18,51,0.80); z-index:1000;
+            align-items:flex-end; justify-content:center; padding:0;
+            backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+        }
+        .modal-overlay.active { display: flex; }
+        .admin-panel {
+            background:#fff; border-radius:var(--radius) var(--radius) 0 0; width:100%; max-height:92vh; max-height:92dvh;
+            overflow:auto; box-shadow:var(--shadow-lg); animation:fadeInUp 0.35s ease-out;
+            padding-bottom: var(--safe-bottom);
+        }
+        .admin-header {
+            background:var(--primary-dark); padding:18px 20px; color:#fff;
+            display:flex; align-items:center; justify-content:space-between;
+            border-radius:var(--radius) var(--radius) 0 0; position:sticky; top:0; z-index:10;
+        }
+        .admin-header h2 { font-size: 1rem; font-weight: 700; }
+        .admin-actions { display: flex; gap: 8px; }
+        .admin-actions button {
+            padding:10px 16px; border:none; border-radius:6px; font-size:0.82rem;
+            font-weight:600; cursor:pointer; transition:var(--transition); min-height:40px;
+        }
+        .btn-export { background: var(--accent); color: #fff; }
+        .btn-export:active { background: var(--accent-hover); }
+        .btn-close-modal { background: rgba(255,255,255,0.12); color: #fff; }
+        .btn-close-modal:active { background: rgba(255,255,255,0.22); }
+        .admin-stats { display:flex; gap:10px; padding:16px 20px; background:var(--bg-light); flex-wrap:nowrap; overflow-x:auto; }
+        .stat-card {
+            flex:1; min-width:100px; background:#fff; padding:14px 12px; border-radius:var(--radius-sm);
+            text-align:center; box-shadow:var(--shadow-sm); border:1px solid var(--border-light); flex-shrink:0;
+        }
+        .stat-card .number { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .stat-card .label { font-size: 0.68rem; color: var(--text-muted); margin-top: 4px; text-transform:uppercase; letter-spacing:0.3px; }
+        .admin-table-wrap { padding: 16px 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .admin-table { width:100%; border-collapse:collapse; font-size:0.78rem; white-space:nowrap; }
+        .admin-table th { background:var(--primary); color:#fff; padding:10px 12px; text-align:left; font-weight:600; }
+        .admin-table td { padding:10px 12px; border-bottom:1px solid #F0ECF5; color:var(--text-body); }
+        .admin-table tr:active td { background: var(--bg-highlight); }
+        .admin-table th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+        .admin-table th:last-child { border-radius: 0 var(--radius-sm) 0 0; }
+        .password-modal {
+            background:#fff; border-radius:var(--radius) var(--radius) 0 0; width:100%;
+            box-shadow:var(--shadow-lg); animation:fadeInUp 0.35s ease-out; overflow:hidden;
+            padding-bottom: var(--safe-bottom);
+        }
+        .password-modal-header { background:var(--primary-dark); padding:24px 20px; color:#fff; text-align:center; }
+        .password-modal-header h2 { font-size: 1.05rem; font-weight: 700; margin-bottom:4px; }
+        .password-modal-header p { font-size: 0.82rem; opacity: 0.65; }
+        .password-modal-body { padding: 24px 20px; }
+        .password-modal-body input[type="password"] {
+            width:100%; padding:14px 16px; border:1.5px solid var(--border-light); border-radius:var(--radius-sm);
+            font-size:16px; color:var(--text-dark); transition:var(--transition); background:var(--bg-light); margin-bottom:8px;
+            -webkit-appearance: none; appearance: none;
+        }
+        .password-modal-body input[type="password"]:focus { outline:none; border-color:var(--primary-light); background:#fff; box-shadow:0 0 0 3px rgba(91,45,142,0.10); }
+        .password-modal-body input.error { border-color: var(--error); }
+        .pw-error-msg { color:var(--error); font-size:0.8rem; margin-bottom:12px; min-height:22px; }
+        .pw-blocked-msg { color:var(--error); font-size:0.86rem; text-align:center; padding:16px; font-weight:600; line-height:1.5; }
+        .pw-actions { display: flex; gap: 10px; }
+        .pw-actions button {
+            flex:1; padding:14px; border:none; border-radius:var(--radius-sm);
+            font-size:0.92rem; font-weight:700; cursor:pointer; transition:var(--transition); min-height:50px;
+        }
+        .btn-pw-submit { background:var(--accent); color:#fff; }
+        .btn-pw-submit:active { background:var(--accent-hover); }
+        .btn-pw-cancel { background: #F0ECF5; color: var(--text-dark); }
+        .btn-pw-cancel:active { background: #E0D4F0; }
+        .privacy-modal {
+            background:#fff; border-radius:var(--radius) var(--radius) 0 0; width:100%;
+            max-height:92vh; max-height:92dvh; overflow:hidden; display:flex; flex-direction:column;
+            box-shadow:var(--shadow-lg); animation:fadeInUp 0.35s ease-out;
+        }
+        .privacy-modal-header {
+            background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding:20px; color:#fff; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+        }
+        .privacy-modal-header h2 { font-size: 1.05rem; font-weight: 700; }
+        .privacy-modal-close {
+            background:rgba(255,255,255,0.12); border:none; color:#fff; width:40px; height:40px;
+            border-radius:50%; font-size:1.1rem; cursor:pointer; transition:var(--transition);
+            display:flex; align-items:center; justify-content:center;
+        }
+        .privacy-modal-close:active { background: rgba(255,255,255,0.3); }
+        .privacy-modal-body {
+            padding:24px 20px; padding-bottom:calc(24px + var(--safe-bottom));
+            overflow-y:auto; flex:1; font-size:0.9rem; line-height:1.75; color:var(--text-body);
+            -webkit-overflow-scrolling: touch;
+        }
+        .privacy-modal-body h3 { color:var(--primary-dark); font-size:0.95rem; margin:20px 0 8px 0; font-weight:700; }
+        .privacy-modal-body h3:first-child { margin-top: 0; }
+        .privacy-modal-body p { margin-bottom: 10px; }
+        .privacy-modal-body ul { margin: 8px 0 14px 20px; }
+        .privacy-modal-body ul li { margin-bottom: 6px; }
+        .privacy-modal-body .highlight {
+            background:var(--bg-highlight); border-left:3px solid var(--primary);
+            padding:14px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:16px 0; font-size:0.86rem;
+        }
+        .privacy-modal-footer {
+            padding:16px 20px; padding-bottom:calc(16px + var(--safe-bottom));
+            border-top:1px solid var(--border-light); text-align:center; flex-shrink:0;
+        }
+        .btn-understood {
+            padding:14px 40px; border:none; border-radius:var(--radius-sm); background:var(--accent);
+            color:#fff; font-size:0.95rem; font-weight:700; cursor:pointer; transition:var(--transition);
+            min-height:50px; min-width:160px;
+        }
+        .btn-understood:active { background:var(--accent-hover); }
+        .toast {
+            position:fixed; top:calc(12px + var(--safe-top)); left:12px; right:12px;
+            background:var(--success); color:#fff; padding:16px 20px; border-radius:var(--radius-sm);
+            font-size:0.9rem; font-weight:600; box-shadow:0 4px 16px rgba(0,0,0,0.15);
+            transform:translateY(-120%); transition:transform 0.4s ease; z-index:2000; text-align:center;
+        }
+        .toast.show { transform: translateY(0); }
+        .footer-note {
+            text-align:center; margin-top:20px; padding:0 8px;
+            font-size:0.76rem; color:rgba(255,255,255,0.35); letter-spacing:0.2px; line-height:1.8;
+        }
+        .footer-link {
+            color:rgba(255,255,255,0.55); text-decoration:none; cursor:pointer;
+            font-weight:500; padding:6px 2px; display:inline-block;
+        }
+        .footer-link:active { color:#fff; }
+        .footer-divider { margin: 0 6px; opacity: 0.3; }
+
+        @media (min-width: 641px) {
+            body { padding: 24px; }
+            .card-header { padding: 40px 32px 28px; }
+            .card-header h1 { font-size: 1.6rem; }
+            .card-body { padding: 32px; }
+            .event-header { padding: 22px 28px; flex-direction: row; align-items: center; justify-content: space-between; }
+            .event-header-top { width: 100%; }
+            .user-info-bar { flex-direction: row; gap: 24px; padding: 14px 28px; }
+            .slido-container iframe { min-height: 560px; height: 70vh; }
+            .modal-overlay { align-items: center; padding: 20px; }
+            .admin-panel { border-radius: var(--radius); max-width: 920px; max-height: 85vh; padding-bottom: 0; }
+            .admin-header { border-radius: var(--radius) var(--radius) 0 0; }
+            .password-modal { border-radius: var(--radius); max-width: 400px; padding-bottom: 0; }
+            .privacy-modal { border-radius: var(--radius); max-width: 560px; max-height: 85vh; }
+            .btn-primary:hover { background:var(--accent-hover); transform:translateY(-1px); box-shadow:0 4px 16px rgba(242,101,34,0.30); }
+            .btn-back:hover { background:rgba(255,255,255,0.20); border-color:rgba(255,255,255,0.30); }
+            .btn-export:hover { background: var(--accent-hover); }
+            .btn-close-modal:hover { background: rgba(255,255,255,0.22); }
+            .btn-pw-submit:hover { background:var(--accent-hover); }
+            .btn-pw-cancel:hover { background: #E0D4F0; }
+            .btn-understood:hover { background:var(--accent-hover); box-shadow:0 4px 16px rgba(242,101,34,0.25); }
+            .privacy-modal-close:hover { background: rgba(255,255,255,0.25); }
+            .admin-table tr:hover td { background: var(--bg-highlight); }
+            .footer-link:hover { color:#fff; text-decoration:underline; }
+            .privacy-link:hover { color: var(--accent); }
+        }
+        @media (max-width: 380px) {
+            .card-header h1 { font-size: 1.25rem; }
+            .stat-card .number { font-size: 1.3rem; }
+            .admin-actions { gap: 6px; }
+            .admin-actions button { padding: 8px 10px; font-size: 0.76rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="viewRegister" class="view active">
+        <div class="card fade-in">
+            <div class="card-header">
+                <h1>F&oacute;rum DII 2026</h1>
+                <p>Preencha seus dados para participar da sess&atilde;o interativa</p>
+            </div>
+            <div class="card-body">
+                <form id="registerForm" novalidate>
+                    <div class="form-group">
+                        <label>Nome Completo <span class="required">*</span></label>
+                        <input type="text" id="fieldName" placeholder="Ex.: Dr. Jo&atilde;o Silva" autocomplete="name" enterkeyhint="next">
+                        <div class="error-msg">Por favor, insira seu nome completo.</div>
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail <span class="required">*</span></label>
+                        <input type="email" id="fieldEmail" placeholder="seu.email@exemplo.com" autocomplete="email" enterkeyhint="next" inputmode="email">
+                        <div class="error-msg">Insira um e-mail v&aacute;lido.</div>
+                    </div>
+                    <div class="form-group">
+                        <label>CRM <span class="required">*</span></label>
+                        <input type="text" id="fieldCRM" placeholder="Ex.: CRM/SP 123456" enterkeyhint="done">
+                        <div class="error-msg">Por favor, insira seu CRM.</div>
+                    </div>
+                    <div class="consent-box" id="consentBox">
+                        <label class="consent-label">
+                            <input type="checkbox" id="consentCheck">
+                            <span>Declaro que li e concordo com a <span class="privacy-link" onclick="event.preventDefault(); openPrivacy();">Pol&iacute;tica de Privacidade</span> e os termos de uso. Autorizo a coleta e o tratamento dos meus dados pessoais para fins de participa&ccedil;&atilde;o neste evento, conforme a <strong>LGPD (Lei n&ordm; 13.709/2018)</strong>.</span>
+                        </label>
+                    </div>
+                    <div class="consent-error">Voc&ecirc; deve aceitar os termos para continuar.</div>
+                    <button type="submit" class="btn-primary">Acessar Evento</button>
+                </form>
+            </div>
+        </div>
+        <p class="footer-note">
+            <span class="footer-link" onclick="openPrivacy();">Pol&iacute;tica de Privacidade</span>
+            <span class="footer-divider">|</span>
+            <span style="opacity:0.6;">Ctrl + Shift + A</span>
+        </p>
+    </div>
+
+    <div id="viewEvent" class="view view-event">
+        <div class="card fade-in">
+            <div class="event-header">
+                <div class="event-header-top">
+                    <div class="welcome">Bem-vindo(a), <strong id="welcomeName"></strong></div>
+                    <div class="event-header-actions">
+                        <div class="badge"><span class="badge-dot"></span>Ao Vivo</div>
+                        <button class="btn-back" onclick="goBack()" title="Sair">
+                            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                            Sair
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="user-info-bar">
+                <div class="info-row">
+                    <svg class="info-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <b id="infoEmail"></b>
+                </div>
+                <div class="info-row">
+                    <svg class="info-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+                    <b id="infoCRM"></b>
+                </div>
+                <div class="info-row">
+                    <svg class="info-icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10S22 17.52 22 12 17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                    <b id="infoTime"></b>
+                </div>
+            </div>
+            <div class="slido-container">
+                <iframe id="slidoFrame" src="" allow="clipboard-write" title="Slido"></iframe>
+            </div>
+        </div>
+        <p class="footer-note" style="margin-top:14px;">
+            Identificado como <strong id="footerUser" style="color:rgba(255,255,255,0.55);"></strong>
+            <span class="footer-divider">|</span>
+            <span class="footer-link" onclick="openPrivacy();">Pol&iacute;tica de Privacidade</span>
+        </p>
+    </div>
+
+    <div class="modal-overlay" id="passwordOverlay">
+        <div class="password-modal" id="passwordModal">
+            <div class="password-modal-header">
+                <h2>Painel Administrativo</h2>
+                <p>&Aacute;rea restrita &mdash; insira a senha de acesso</p>
+            </div>
+            <div class="password-modal-body">
+                <div id="pwFormArea">
+                    <input type="password" id="pwInput" placeholder="Digite a senha..." enterkeyhint="go">
+                    <div class="pw-error-msg" id="pwErrorMsg"></div>
+                    <div class="pw-actions">
+                        <button class="btn-pw-cancel" onclick="closePasswordModal()">Cancelar</button>
+                        <button class="btn-pw-submit" id="btnPwSubmit" onclick="submitPassword()">Entrar</button>
+                    </div>
+                </div>
+                <div id="pwBlockedArea" style="display:none;">
+                    <div class="pw-blocked-msg">
+                        Acesso bloqueado por excesso de tentativas.<br>
+                        Tente novamente em <strong id="blockCountdown">60</strong> segundos.
+                    </div>
+                    <div class="pw-actions" style="margin-top:16px;">
+                        <button class="btn-pw-cancel" onclick="closePasswordModal()" style="flex:1;">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="adminOverlay">
+        <div class="admin-panel">
+            <div class="admin-header">
+                <h2>Painel Administrativo</h2>
+                <div class="admin-actions">
+                    <button class="btn-export" onclick="exportCSV()">Exportar CSV</button>
+                    <button class="btn-close-modal" onclick="closeAdmin()">Fechar</button>
+                </div>
+            </div>
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="number" id="statTotal">0</div>
+                    <div class="label">Total Registrados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="statToday">0</div>
+                    <div class="label">Registros Hoje</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="statConsent">0</div>
+                    <div class="label">Com Consentimento</div>
+                </div>
+            </div>
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nome Completo</th>
+                            <th>E-mail</th>
+                            <th>CRM</th>
+                            <th>Consentimento</th>
+                            <th>Data/Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="privacyOverlay">
+        <div class="privacy-modal">
+            <div class="privacy-modal-header">
+                <h2>Pol&iacute;tica de Privacidade</h2>
+                <button class="privacy-modal-close" onclick="closePrivacy()">&#10005;</button>
+            </div>
+            <div class="privacy-modal-body">
+                <h3>Sobre esta Pol&iacute;tica</h3>
+                <p>Esta Pol&iacute;tica de Privacidade descreve de forma transparente como os dados pessoais dos participantes s&atilde;o coletados e utilizados neste evento interativo, em conformidade com a <strong>LGPD (Lei n&ordm; 13.709/2018)</strong>.</p>
+
+                <h3>Dados Coletados</h3>
+                <p>Para viabilizar sua participa&ccedil;&atilde;o, coletamos:</p>
+                <ul>
+                    <li><strong>Nome completo</strong></li>
+                    <li><strong>Endere&ccedil;o de e-mail</strong></li>
+                    <li><strong>CRM (Conselho Regional de Medicina)</strong></li>
+                    <li><strong>Registro de consentimento</strong> (data e hora)</li>
+                    <li><strong>Dados de intera&ccedil;&atilde;o</strong> (registros de acesso e participa&ccedil;&atilde;o)</li>
+                </ul>
+
+                <h3>Finalidade</h3>
+                <p>Todos os dados coletados s&atilde;o utilizados <strong>exclusivamente</strong> para:</p>
+                <ul>
+                    <li><strong>Acesso &agrave; plataforma de interatividade</strong> &mdash; permitir sua identifica&ccedil;&atilde;o e participa&ccedil;&atilde;o nas sess&otilde;es ao vivo via Slido</li>
+                    <li><strong>Melhoria da experi&ecirc;ncia em intera&ccedil;&otilde;es futuras</strong> &mdash; gerar relat&oacute;rios de engajamento para aprimorar os pr&oacute;ximos eventos</li>
+                </ul>
+                <p>N&atilde;o compartilhamos seus dados com terceiros para fins comerciais ou publicit&aacute;rios.</p>
+
+                <div class="highlight">
+                    <strong>Seus direitos:</strong> O tratamento dos seus dados &eacute; baseado no seu consentimento livre e informado (Art. 7&ordm;, I da LGPD). Voc&ecirc; pode <strong>revogar seu consentimento a qualquer momento</strong> entrando em contato com a equipe organizadora do evento.
+                </div>
+
+                <p style="margin-top:20px; color:var(--text-muted); font-size:0.8rem; text-align:center;">
+                    <em>&Uacute;ltima atualiza&ccedil;&atilde;o: Junho de 2026</em>
+                </p>
+            </div>
+            <div class="privacy-modal-footer">
+                <button class="btn-understood" onclick="closePrivacy()">Entendi</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+    (function() {
+        var DB_KEY = 'evento_slido_registros';
+        var SLIDO_BASE = 'https://app.sli.do/event/r3vKaTdQ6RgCqjee3aLtbN';
+        var ADMIN_PASSWORD = 'Takeda*2026';
+        var MAX_ATTEMPTS = 3;
+        var BLOCK_SECONDS = 60;
+        var pwAttempts = 0;
+        var pwBlocked = false;
+        var blockTimer = null;
+
+        function getDB() {
+            try { return JSON.parse(localStorage.getItem(DB_KEY)) || []; }
+            catch(e) { return []; }
+        }
+        function saveDB(data) { localStorage.setItem(DB_KEY, JSON.stringify(data)); }
+        function addRecord(record) { var db = getDB(); db.push(record); saveDB(db); }
+        function findByEmail(email) {
+            return getDB().find(function(r) { return r.email.toLowerCase() === email.toLowerCase(); });
+        }
+
+        var viewRegister = document.getElementById('viewRegister');
+        var viewEvent = document.getElementById('viewEvent');
+        var form = document.getElementById('registerForm');
+        var fieldName = document.getElementById('fieldName');
+        var fieldEmail = document.getElementById('fieldEmail');
+        var fieldCRM = document.getElementById('fieldCRM');
+        var consentCheck = document.getElementById('consentCheck');
+        var consentBox = document.getElementById('consentBox');
+        var slidoFrame = document.getElementById('slidoFrame');
+
+        var lastUser = localStorage.getItem('evento_slido_current_user');
+        if (lastUser) {
+            try {
+                var user = JSON.parse(lastUser);
+                if (user && user.name && user.email) { showEventView(user); }
+            } catch(e) {}
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var valid = true;
+            if (!fieldName.value.trim()) { fieldName.classList.add('error'); valid = false; }
+            else { fieldName.classList.remove('error'); }
+            var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRe.test(fieldEmail.value.trim())) { fieldEmail.classList.add('error'); valid = false; }
+            else { fieldEmail.classList.remove('error'); }
+            if (!fieldCRM.value.trim()) { fieldCRM.classList.add('error'); valid = false; }
+            else { fieldCRM.classList.remove('error'); }
+            if (!consentCheck.checked) { consentBox.classList.add('error'); valid = false; }
+            else { consentBox.classList.remove('error'); }
+            if (!valid) return;
+
+            var record = {
+                id: Date.now(),
+                name: fieldName.value.trim(),
+                email: fieldEmail.value.trim(),
+                crm: fieldCRM.value.trim(),
+                consent: true,
+                timestamp: new Date().toISOString(),
+                interactions: []
+            };
+            var existing = findByEmail(record.email);
+            if (existing) {
+                showToast('Bem-vindo(a) de volta! Redirecionando...');
+                localStorage.setItem('evento_slido_current_user', JSON.stringify(existing));
+                setTimeout(function() { showEventView(existing); }, 800);
+                return;
+            }
+            addRecord(record);
+            localStorage.setItem('evento_slido_current_user', JSON.stringify(record));
+            showToast('Registro realizado com sucesso!');
+            setTimeout(function() { showEventView(record); }, 600);
+        });
+
+        [fieldName, fieldEmail, fieldCRM].forEach(function(f) {
+            f.addEventListener('input', function() { f.classList.remove('error'); });
+        });
+        consentCheck.addEventListener('change', function() { consentBox.classList.remove('error'); });
+
+        function showEventView(user) {
+            viewRegister.classList.remove('active');
+            viewEvent.classList.add('active');
+            document.getElementById('welcomeName').textContent = user.name.split(' ')[0];
+            document.getElementById('infoEmail').textContent = user.email;
+            document.getElementById('infoCRM').textContent = user.crm;
+            document.getElementById('infoTime').textContent = new Date().toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+            document.getElementById('footerUser').textContent = user.name;
+            var slidoURL = SLIDO_BASE + '?user_name=' + encodeURIComponent(user.name) + '&user_email=' + encodeURIComponent(user.email);
+            slidoFrame.src = slidoURL;
+            logInteraction(user.email, 'acesso_evento');
+        }
+
+        window.goBack = function() {
+            localStorage.removeItem('evento_slido_current_user');
+            slidoFrame.src = '';
+            viewEvent.classList.remove('active');
+            viewRegister.classList.add('active');
+            form.reset();
+            showToast('Sessao encerrada.');
+        };
+
+        function logInteraction(email, type) {
+            var db = getDB();
+            var idx = db.findIndex(function(r) { return r.email.toLowerCase() === email.toLowerCase(); });
+            if (idx !== -1) {
+                if (!db[idx].interactions) db[idx].interactions = [];
+                db[idx].interactions.push({ type: type, timestamp: new Date().toISOString() });
+                saveDB(db);
+            }
+        }
+
+        function showToast(msg) {
+            var toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(function() { toast.classList.remove('show'); }, 3000);
+        }
+        window.showToast = showToast;
+
+        window.openPrivacy = function() { document.getElementById('privacyOverlay').classList.add('active'); };
+        window.closePrivacy = function() { document.getElementById('privacyOverlay').classList.remove('active'); };
+        document.getElementById('privacyOverlay').addEventListener('click', function(e) {
+            if (e.target === this) window.closePrivacy();
+        });
+
+        function openPasswordModal() {
+            var overlay = document.getElementById('passwordOverlay');
+            overlay.classList.add('active');
+            document.getElementById('pwInput').value = '';
+            document.getElementById('pwErrorMsg').textContent = '';
+            document.getElementById('pwInput').classList.remove('error');
+            if (pwBlocked) {
+                document.getElementById('pwFormArea').style.display = 'none';
+                document.getElementById('pwBlockedArea').style.display = 'block';
+            } else {
+                document.getElementById('pwFormArea').style.display = 'block';
+                document.getElementById('pwBlockedArea').style.display = 'none';
+                setTimeout(function() { document.getElementById('pwInput').focus(); }, 100);
+            }
+        }
+        window.closePasswordModal = function() { document.getElementById('passwordOverlay').classList.remove('active'); };
+        document.getElementById('passwordOverlay').addEventListener('click', function(e) {
+            if (e.target === this) window.closePasswordModal();
+        });
+
+        window.submitPassword = function() {
+            if (pwBlocked) return;
+            var input = document.getElementById('pwInput');
+            var errorMsg = document.getElementById('pwErrorMsg');
+            if (input.value === ADMIN_PASSWORD) {
+                pwAttempts = 0;
+                window.closePasswordModal();
+                openAdminPanel();
+            } else {
+                pwAttempts++;
+                input.classList.add('error');
+                var modal = document.getElementById('passwordModal');
+                modal.classList.add('shake');
+                setTimeout(function() { modal.classList.remove('shake'); }, 500);
+                var remaining = MAX_ATTEMPTS - pwAttempts;
+                if (remaining > 0) {
+                    errorMsg.textContent = 'Senha incorreta. ' + remaining + ' tentativa(s) restante(s).';
+                } else {
+                    pwBlocked = true;
+                    document.getElementById('pwFormArea').style.display = 'none';
+                    document.getElementById('pwBlockedArea').style.display = 'block';
+                    var countdown = BLOCK_SECONDS;
+                    document.getElementById('blockCountdown').textContent = countdown;
+                    blockTimer = setInterval(function() {
+                        countdown--;
+                        document.getElementById('blockCountdown').textContent = countdown;
+                        if (countdown <= 0) {
+                            clearInterval(blockTimer);
+                            pwBlocked = false;
+                            pwAttempts = 0;
+                            document.getElementById('pwFormArea').style.display = 'block';
+                            document.getElementById('pwBlockedArea').style.display = 'none';
+                            document.getElementById('pwInput').value = '';
+                            document.getElementById('pwErrorMsg').textContent = '';
+                            document.getElementById('pwInput').classList.remove('error');
+                        }
+                    }, 1000);
+                }
+                input.value = '';
+                input.focus();
+            }
+        };
+        document.getElementById('pwInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); window.submitPassword(); }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+                e.preventDefault();
+                openPasswordModal();
+            }
+        });
+
+        function openAdminPanel() {
+            document.getElementById('adminOverlay').classList.add('active');
+            renderAdminData();
+        }
+        window.closeAdmin = function() { document.getElementById('adminOverlay').classList.remove('active'); };
+        document.getElementById('adminOverlay').addEventListener('click', function(e) {
+            if (e.target === this) window.closeAdmin();
+        });
+
+        function renderAdminData() {
+            var db = getDB();
+            var tbody = document.getElementById('adminTableBody');
+            var today = new Date().toISOString().slice(0, 10);
+            document.getElementById('statTotal').textContent = db.length;
+            document.getElementById('statToday').textContent = db.filter(function(r) { return r.timestamp.slice(0,10) === today; }).length;
+            document.getElementById('statConsent').textContent = db.filter(function(r) { return r.consent; }).length;
+            tbody.innerHTML = '';
+            db.forEach(function(r, i) {
+                var tr = document.createElement('tr');
+                var dt = new Date(r.timestamp);
+                var fd = dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR');
+                tr.innerHTML = '<td>'+(i+1)+'</td><td>'+escapeHTML(r.name)+'</td><td>'+escapeHTML(r.email)+'</td><td>'+escapeHTML(r.crm)+'</td><td>'+(r.consent ? 'Sim' : 'Nao')+'</td><td>'+fd+'</td>';
+                tbody.appendChild(tr);
+            });
+        }
+        window.exportCSV = function() {
+            var db = getDB();
+            if (db.length === 0) { showToast('Nenhum registro para exportar.'); return; }
+            var BOM = '﻿';
+            var headers = ['#','Nome Completo','E-mail','CRM','Consentimento','Data/Hora Registro','Interacoes'];
+            var rows = db.map(function(r, i) {
+                var inter = (r.interactions || []).map(function(x) { return x.type + ' (' + x.timestamp + ')'; }).join('; ');
+                return [i+1, '"'+r.name+'"', '"'+r.email+'"', '"'+r.crm+'"', r.consent?'Sim':'Nao', '"'+new Date(r.timestamp).toLocaleString('pt-BR')+'"', '"'+inter+'"'].join(',');
+            });
+            var csv = BOM + headers.join(',') + '\n' + rows.join('\n');
+            var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'relatorio_forum_dii_' + new Date().toISOString().slice(0,10) + '.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('CSV exportado com sucesso!');
+        };
+
+        function escapeHTML(str) {
+            var div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+    })();
+    </script>
+</body>
+</html>
