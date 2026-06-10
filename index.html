@@ -71,8 +71,7 @@
             font-size:16px; color:var(--text-dark); transition:var(--transition); background:var(--bg-light);
             -webkit-appearance: none; appearance: none; cursor:pointer;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%237A6E8A' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: right 12px center;
-            padding-right: 32px;
+            background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
         }
         .crm-row select:focus { outline:none; border-color:var(--primary-light); background:#fff; box-shadow:0 0 0 3px rgba(91,45,142,0.10); }
         .crm-row select.error { border-color: var(--error); background:#FEF5F5; }
@@ -84,13 +83,19 @@
         .crm-row input:focus { outline:none; border-color:var(--primary-light); background:#fff; box-shadow:0 0 0 3px rgba(91,45,142,0.10); }
         .crm-error { color:var(--error); font-size:0.78rem; margin-top:5px; display:none; }
         .crm-error.visible { display: block; }
-        .consent-box { background:var(--bg-highlight); border:1.5px solid var(--border-light); border-radius:var(--radius-sm); padding:16px; margin-bottom:20px; }
-        .consent-box .consent-label { display:flex; align-items:flex-start; gap:12px; cursor:pointer; font-size:0.86rem; line-height:1.6; color:var(--text-body); }
+
+        /* CONSENT BOXES */
+        .consent-section { margin-bottom: 24px; }
+        .consent-box { background:var(--bg-highlight); border:1.5px solid var(--border-light); border-radius:var(--radius-sm); padding:16px; margin-bottom:10px; }
+        .consent-box .consent-label { display:flex; align-items:flex-start; gap:12px; cursor:pointer; font-size:0.84rem; line-height:1.6; color:var(--text-body); }
         .consent-box input[type="checkbox"] { width:22px; height:22px; min-width:22px; margin-top:2px; accent-color:var(--primary); flex-shrink:0; cursor:pointer; }
         .consent-box.error { border-color: var(--error); background: #FEF5F5; }
-        .consent-error { color:var(--error); font-size:0.78rem; margin-top:6px; display:none; }
-        .consent-box.error ~ .consent-error { display: block; }
+        .consent-box-error { color:var(--error); font-size:0.78rem; margin-top:-4px; margin-bottom:10px; display:none; }
+        .consent-box-error.visible { display: block; }
         .privacy-link { color:var(--primary); text-decoration:underline; font-weight:700; cursor:pointer; }
+        .saiba-mais-link { color:var(--primary); text-decoration:underline; font-weight:600; cursor:pointer; font-size:0.82rem; }
+
+        .form-disclaimer { font-size:0.72rem; color:var(--text-muted); margin-bottom:16px; }
         .btn-primary {
             width:100%; padding:16px; border:none; border-radius:var(--radius-sm);
             background: var(--accent); color:#fff;
@@ -127,12 +132,56 @@
             vertical-align:middle; margin-right:8px;
         }
         .redirect-status span { font-size:0.88rem; color:var(--text-muted); font-weight:500; }
+
+        /* MODALS */
         .modal-overlay {
             display:none; position:fixed; inset:0; background:rgba(30,18,51,0.80); z-index:1000;
             align-items:flex-end; justify-content:center; padding:0;
             backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
         }
         .modal-overlay.active { display: flex; }
+        .info-modal {
+            background:#fff; border-radius:var(--radius) var(--radius) 0 0; width:100%;
+            max-height:85vh; max-height:85dvh; overflow:hidden; display:flex; flex-direction:column;
+            box-shadow:var(--shadow-lg); animation:fadeInUp 0.35s ease-out;
+        }
+        .info-modal-header {
+            background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding:20px; color:#fff; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+        }
+        .info-modal-header h2 { font-size: 1.05rem; font-weight: 700; }
+        .info-modal-close {
+            background:rgba(255,255,255,0.12); border:none; color:#fff; width:40px; height:40px;
+            border-radius:50%; font-size:1.1rem; cursor:pointer; transition:var(--transition);
+            display:flex; align-items:center; justify-content:center;
+        }
+        .info-modal-close:active { background: rgba(255,255,255,0.3); }
+        .info-modal-body {
+            padding:24px 20px; padding-bottom:calc(24px + var(--safe-bottom));
+            overflow-y:auto; flex:1; font-size:0.9rem; line-height:1.75; color:var(--text-body);
+            -webkit-overflow-scrolling: touch;
+        }
+        .info-modal-body h3 { color:var(--primary-dark); font-size:0.95rem; margin:20px 0 8px 0; font-weight:700; }
+        .info-modal-body h3:first-child { margin-top: 0; }
+        .info-modal-body p { margin-bottom: 10px; }
+        .info-modal-body ul { margin: 8px 0 14px 20px; }
+        .info-modal-body ul li { margin-bottom: 6px; }
+        .info-modal-body .highlight {
+            background:var(--bg-highlight); border-left:3px solid var(--primary);
+            padding:14px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:16px 0; font-size:0.86rem;
+        }
+        .info-modal-footer {
+            padding:16px 20px; padding-bottom:calc(16px + var(--safe-bottom));
+            border-top:1px solid var(--border-light); text-align:center; flex-shrink:0;
+        }
+        .btn-understood {
+            padding:14px 40px; border:none; border-radius:var(--radius-sm); background:var(--accent);
+            color:#fff; font-size:0.95rem; font-weight:700; cursor:pointer; transition:var(--transition);
+            min-height:50px; min-width:160px;
+        }
+        .btn-understood:active { background:var(--accent-hover); }
+
+        /* ADMIN */
         .admin-panel {
             background:#fff; border-radius:var(--radius) var(--radius) 0 0; width:100%; max-height:92vh; max-height:92dvh;
             overflow:auto; box-shadow:var(--shadow-lg); animation:fadeInUp 0.35s ease-out;
@@ -155,18 +204,20 @@
         .btn-close-modal:active { background: rgba(255,255,255,0.22); }
         .admin-stats { display:flex; gap:10px; padding:16px 20px; background:var(--bg-light); flex-wrap:nowrap; overflow-x:auto; }
         .stat-card {
-            flex:1; min-width:100px; background:#fff; padding:14px 12px; border-radius:var(--radius-sm);
+            flex:1; min-width:80px; background:#fff; padding:14px 10px; border-radius:var(--radius-sm);
             text-align:center; box-shadow:var(--shadow-sm); border:1px solid var(--border-light); flex-shrink:0;
         }
-        .stat-card .number { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
-        .stat-card .label { font-size: 0.68rem; color: var(--text-muted); margin-top: 4px; text-transform:uppercase; letter-spacing:0.3px; }
+        .stat-card .number { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+        .stat-card .label { font-size: 0.62rem; color: var(--text-muted); margin-top: 4px; text-transform:uppercase; letter-spacing:0.3px; }
         .admin-table-wrap { padding: 16px 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .admin-table { width:100%; border-collapse:collapse; font-size:0.78rem; white-space:nowrap; }
-        .admin-table th { background:var(--primary); color:#fff; padding:10px 12px; text-align:left; font-weight:600; }
-        .admin-table td { padding:10px 12px; border-bottom:1px solid #F0ECF5; color:var(--text-body); }
+        .admin-table { width:100%; border-collapse:collapse; font-size:0.75rem; white-space:nowrap; }
+        .admin-table th { background:var(--primary); color:#fff; padding:9px 10px; text-align:left; font-weight:600; }
+        .admin-table td { padding:9px 10px; border-bottom:1px solid #F0ECF5; color:var(--text-body); }
         .admin-table tr:active td { background: var(--bg-highlight); }
         .admin-table th:first-child { border-radius: var(--radius-sm) 0 0 0; }
         .admin-table th:last-child { border-radius: 0 var(--radius-sm) 0 0; }
+
+        /* PASSWORD */
         .password-modal {
             background:#fff; border-radius:var(--radius) var(--radius) 0 0; width:100%;
             box-shadow:var(--shadow-lg); animation:fadeInUp 0.35s ease-out; overflow:hidden;
@@ -194,46 +245,7 @@
         .btn-pw-submit:active { background:var(--accent-hover); }
         .btn-pw-cancel { background: #F0ECF5; color: var(--text-dark); }
         .btn-pw-cancel:active { background: #E0D4F0; }
-        .privacy-modal {
-            background:#fff; border-radius:var(--radius) var(--radius) 0 0; width:100%;
-            max-height:92vh; max-height:92dvh; overflow:hidden; display:flex; flex-direction:column;
-            box-shadow:var(--shadow-lg); animation:fadeInUp 0.35s ease-out;
-        }
-        .privacy-modal-header {
-            background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding:20px; color:#fff; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
-        }
-        .privacy-modal-header h2 { font-size: 1.05rem; font-weight: 700; }
-        .privacy-modal-close {
-            background:rgba(255,255,255,0.12); border:none; color:#fff; width:40px; height:40px;
-            border-radius:50%; font-size:1.1rem; cursor:pointer; transition:var(--transition);
-            display:flex; align-items:center; justify-content:center;
-        }
-        .privacy-modal-close:active { background: rgba(255,255,255,0.3); }
-        .privacy-modal-body {
-            padding:24px 20px; padding-bottom:calc(24px + var(--safe-bottom));
-            overflow-y:auto; flex:1; font-size:0.9rem; line-height:1.75; color:var(--text-body);
-            -webkit-overflow-scrolling: touch;
-        }
-        .privacy-modal-body h3 { color:var(--primary-dark); font-size:0.95rem; margin:20px 0 8px 0; font-weight:700; }
-        .privacy-modal-body h3:first-child { margin-top: 0; }
-        .privacy-modal-body p { margin-bottom: 10px; }
-        .privacy-modal-body ul { margin: 8px 0 14px 20px; }
-        .privacy-modal-body ul li { margin-bottom: 6px; }
-        .privacy-modal-body .highlight {
-            background:var(--bg-highlight); border-left:3px solid var(--primary);
-            padding:14px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:16px 0; font-size:0.86rem;
-        }
-        .privacy-modal-footer {
-            padding:16px 20px; padding-bottom:calc(16px + var(--safe-bottom));
-            border-top:1px solid var(--border-light); text-align:center; flex-shrink:0;
-        }
-        .btn-understood {
-            padding:14px 40px; border:none; border-radius:var(--radius-sm); background:var(--accent);
-            color:#fff; font-size:0.95rem; font-weight:700; cursor:pointer; transition:var(--transition);
-            min-height:50px; min-width:160px;
-        }
-        .btn-understood:active { background:var(--accent-hover); }
+
         .toast {
             position:fixed; top:calc(12px + var(--safe-top)); left:12px; right:12px;
             background:var(--success); color:#fff; padding:16px 20px; border-radius:var(--radius-sm);
@@ -258,10 +270,10 @@
             .card-header h1 { font-size: 1.6rem; }
             .card-body { padding: 32px; }
             .modal-overlay { align-items: center; padding: 20px; }
-            .admin-panel { border-radius: var(--radius); max-width: 920px; max-height: 85vh; padding-bottom: 0; }
+            .admin-panel { border-radius: var(--radius); max-width: 960px; max-height: 85vh; padding-bottom: 0; }
             .admin-header { border-radius: var(--radius) var(--radius) 0 0; }
             .password-modal { border-radius: var(--radius); max-width: 400px; padding-bottom: 0; }
-            .privacy-modal { border-radius: var(--radius); max-width: 560px; max-height: 85vh; }
+            .info-modal { border-radius: var(--radius); max-width: 560px; max-height: 85vh; }
             .btn-primary:hover { background:var(--accent-hover); transform:translateY(-1px); box-shadow:0 4px 16px rgba(242,101,34,0.30); }
             .btn-secondary:hover { background:var(--border-light); }
             .btn-export:hover { background: var(--accent-hover); }
@@ -269,15 +281,16 @@
             .btn-pw-submit:hover { background:var(--accent-hover); }
             .btn-pw-cancel:hover { background: #E0D4F0; }
             .btn-understood:hover { background:var(--accent-hover); }
-            .privacy-modal-close:hover { background: rgba(255,255,255,0.25); }
+            .info-modal-close:hover { background: rgba(255,255,255,0.25); }
             .admin-table tr:hover td { background: var(--bg-highlight); }
             .footer-link:hover { color:#fff; text-decoration:underline; }
             .privacy-link:hover { color: var(--accent); }
+            .saiba-mais-link:hover { color: var(--accent); }
         }
         @media (max-width: 380px) {
             .card-header h1 { font-size: 1.25rem; }
             .crm-row .crm-uf { flex: 0 0 80px; }
-            .stat-card .number { font-size: 1.3rem; }
+            .stat-card .number { font-size: 1.2rem; }
             .admin-actions button { padding: 8px 10px; font-size: 0.76rem; }
         }
     </style>
@@ -328,21 +341,33 @@
                                 <input type="text" id="fieldCrmNum" placeholder="1234567" inputmode="numeric" pattern="[0-9]*" enterkeyhint="done">
                             </div>
                         </div>
-                        <div class="crm-error" id="crmError">Por favor, selecione a UF e insira o n&uacute;mero do CRM.</div>
+                        <div class="crm-error" id="crmError">Selecione a UF e insira o n&uacute;mero do CRM.</div>
                     </div>
-                    <div class="consent-box" id="consentBox">
-                        <label class="consent-label">
-                            <input type="checkbox" id="consentCheck">
-                            <span>Declaro que li e concordo com a <span class="privacy-link" onclick="event.preventDefault(); openPrivacy();">Pol&iacute;tica de Privacidade</span> e os termos de uso. Autorizo a coleta e o tratamento dos meus dados pessoais para fins de participa&ccedil;&atilde;o neste evento, conforme a <strong>LGPD (Lei n&ordm; 13.709/2018)</strong>.</span>
-                        </label>
+
+                    <div class="consent-section">
+                        <div class="consent-box" id="consentBox1">
+                            <label class="consent-label">
+                                <input type="checkbox" id="consentPrivacy">
+                                <span>Declaro que li e concordo com a <a href="https://www.takeda.com/pt-br/aviso-de-privacidade/" target="_blank" rel="noopener noreferrer" class="privacy-link">Pol&iacute;tica de Privacidade da Takeda</a> e os termos de uso deste evento. <span class="required">*</span></span>
+                            </label>
+                        </div>
+                        <div class="consent-box-error" id="consentError1">Voc&ecirc; deve aceitar a Pol&iacute;tica de Privacidade para continuar.</div>
+
+                        <div class="consent-box" id="consentBox2">
+                            <label class="consent-label">
+                                <input type="checkbox" id="consentComm">
+                                <span>Autorizo a coleta e o processamento dos meus dados para personaliza&ccedil;&atilde;o de comunica&ccedil;&otilde;es futuras nos meios de comunica&ccedil;&atilde;o Takeda. <span class="saiba-mais-link" onclick="event.preventDefault(); event.stopPropagation(); openInfoModal();">Saiba mais</span></span>
+                            </label>
+                        </div>
                     </div>
-                    <div class="consent-error">Voc&ecirc; deve aceitar os termos para continuar.</div>
+
+                    <p class="form-disclaimer">* Campos obrigat&oacute;rios</p>
                     <button type="submit" class="btn-primary">Acessar Evento</button>
                 </form>
             </div>
         </div>
         <p class="footer-note">
-            <span class="footer-link" onclick="openPrivacy();">Pol&iacute;tica de Privacidade</span>
+            <a href="https://www.takeda.com/pt-br/aviso-de-privacidade/" target="_blank" rel="noopener noreferrer" class="footer-link">Pol&iacute;tica de Privacidade</a>
             <span class="footer-divider">|</span>
             <span style="opacity:0.6;">Ctrl + Shift + A</span>
         </p>
@@ -383,7 +408,7 @@
             </div>
         </div>
         <p class="footer-note">
-            <span class="footer-link" onclick="openPrivacy();">Pol&iacute;tica de Privacidade</span>
+            <a href="https://www.takeda.com/pt-br/aviso-de-privacidade/" target="_blank" rel="noopener noreferrer" class="footer-link">Pol&iacute;tica de Privacidade</a>
         </p>
     </div>
 
@@ -425,53 +450,57 @@
                 </div>
             </div>
             <div class="admin-stats">
-                <div class="stat-card"><div class="number" id="statTotal">0</div><div class="label">Total Registrados</div></div>
-                <div class="stat-card"><div class="number" id="statToday">0</div><div class="label">Registros Hoje</div></div>
-                <div class="stat-card"><div class="number" id="statConsent">0</div><div class="label">Com Consentimento</div></div>
+                <div class="stat-card"><div class="number" id="statTotal">0</div><div class="label">Total</div></div>
+                <div class="stat-card"><div class="number" id="statToday">0</div><div class="label">Hoje</div></div>
+                <div class="stat-card"><div class="number" id="statPrivacy">0</div><div class="label">Privacidade</div></div>
+                <div class="stat-card"><div class="number" id="statComm">0</div><div class="label">Comunica&ccedil;&atilde;o</div></div>
             </div>
             <div class="admin-table-wrap">
                 <table class="admin-table">
-                    <thead><tr><th>#</th><th>Nome</th><th>E-mail</th><th>CRM</th><th>Consentimento</th><th>Data/Hora</th></tr></thead>
+                    <thead><tr>
+                        <th>#</th><th>Nome</th><th>E-mail</th><th>CRM</th>
+                        <th>Privacidade</th><th>Comunica&ccedil;&atilde;o</th><th>Data/Hora</th>
+                    </tr></thead>
                     <tbody id="adminTableBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="privacyOverlay">
-        <div class="privacy-modal">
-            <div class="privacy-modal-header">
-                <h2>Pol&iacute;tica de Privacidade</h2>
-                <button class="privacy-modal-close" onclick="closePrivacy()">&#10005;</button>
+    <div class="modal-overlay" id="infoOverlay">
+        <div class="info-modal">
+            <div class="info-modal-header">
+                <h2>Uso dos Dados para Comunica&ccedil;&atilde;o</h2>
+                <button class="info-modal-close" onclick="closeInfoModal()">&#10005;</button>
             </div>
-            <div class="privacy-modal-body">
-                <h3>Sobre esta Pol&iacute;tica</h3>
-                <p>Esta Pol&iacute;tica de Privacidade descreve de forma transparente como os dados pessoais dos participantes s&atilde;o coletados e utilizados neste evento interativo, em conformidade com a <strong>LGPD (Lei n&ordm; 13.709/2018)</strong>.</p>
-                <h3>Dados Coletados</h3>
-                <p>Para viabilizar sua participa&ccedil;&atilde;o, coletamos:</p>
+            <div class="info-modal-body">
+                <h3>Quais dados ser&atilde;o utilizados?</h3>
                 <ul>
                     <li><strong>Nome completo</strong></li>
                     <li><strong>Endere&ccedil;o de e-mail</strong></li>
-                    <li><strong>CRM (Conselho Regional de Medicina)</strong></li>
-                    <li><strong>Registro de consentimento</strong> (data e hora)</li>
-                    <li><strong>Dados de intera&ccedil;&atilde;o</strong> (registros de acesso e participa&ccedil;&atilde;o)</li>
+                    <li><strong>CRM e UF de registro</strong></li>
+                    <li><strong>Dados de intera&ccedil;&atilde;o</strong> (participa&ccedil;&atilde;o em sess&otilde;es e respostas)</li>
                 </ul>
-                <h3>Finalidade</h3>
-                <p>Todos os dados coletados s&atilde;o utilizados <strong>exclusivamente</strong> para:</p>
+
+                <h3>Como seus dados ser&atilde;o utilizados?</h3>
+                <p>Ao consentir, seus dados poder&atilde;o ser utilizados para:</p>
                 <ul>
-                    <li><strong>Acesso &agrave; plataforma de interatividade</strong> &mdash; permitir sua identifica&ccedil;&atilde;o e participa&ccedil;&atilde;o nas sess&otilde;es ao vivo via Slido</li>
-                    <li><strong>Melhoria da experi&ecirc;ncia em intera&ccedil;&otilde;es futuras</strong> &mdash; gerar relat&oacute;rios de engajamento para aprimorar os pr&oacute;ximos eventos</li>
+                    <li><strong>Personaliza&ccedil;&atilde;o de comunica&ccedil;&otilde;es</strong> &mdash; envio de conte&uacute;dos relevantes &agrave; sua &aacute;rea de atua&ccedil;&atilde;o</li>
+                    <li><strong>Convites para eventos futuros</strong> &mdash; f&oacute;runs, webin&aacute;rios e encontros cient&iacute;ficos alinhados ao seu perfil profissional</li>
+                    <li><strong>Recomenda&ccedil;&otilde;es de conte&uacute;do</strong> &mdash; materiais, estudos e atualiza&ccedil;&otilde;es sobre terapias e &aacute;reas de interesse</li>
                 </ul>
-                <p>N&atilde;o compartilhamos seus dados com terceiros para fins comerciais ou publicit&aacute;rios.</p>
+
+                <h3>Base legal e seus direitos</h3>
+                <p>O processamento &eacute; realizado em conformidade com a <strong>LGPD (Lei n&ordm; 13.709/2018)</strong>, com base no seu consentimento livre e informado.</p>
+
                 <div class="highlight">
-                    <strong>Seus direitos:</strong> O tratamento dos seus dados &eacute; baseado no seu consentimento livre e informado (Art. 7&ordm;, I da LGPD). Voc&ecirc; pode <strong>revogar seu consentimento a qualquer momento</strong> entrando em contato com a equipe organizadora do evento.
+                    <strong>Revoga&ccedil;&atilde;o:</strong> Voc&ecirc; pode <strong>revogar este consentimento a qualquer momento</strong>, sem preju&iacute;zo &agrave; sua participa&ccedil;&atilde;o no evento, entrando em contato com a equipe organizadora ou atrav&eacute;s dos canais de comunica&ccedil;&atilde;o da Takeda.
                 </div>
-                <p style="margin-top:20px; color:var(--text-muted); font-size:0.8rem; text-align:center;">
-                    <em>&Uacute;ltima atualiza&ccedil;&atilde;o: Junho de 2026</em>
-                </p>
+
+                <p>Este consentimento &eacute; <strong>opcional</strong> e n&atilde;o impede o acesso ao evento caso n&atilde;o seja concedido.</p>
             </div>
-            <div class="privacy-modal-footer">
-                <button class="btn-understood" onclick="closePrivacy()">Entendi</button>
+            <div class="info-modal-footer">
+                <button class="btn-understood" onclick="closeInfoModal()">Entendi</button>
             </div>
         </div>
     </div>
@@ -509,15 +538,15 @@
         var fieldCrmUf = document.getElementById('fieldCrmUf');
         var fieldCrmNum = document.getElementById('fieldCrmNum');
         var crmError = document.getElementById('crmError');
-        var consentCheck = document.getElementById('consentCheck');
-        var consentBox = document.getElementById('consentBox');
+        var consentPrivacy = document.getElementById('consentPrivacy');
+        var consentComm = document.getElementById('consentComm');
+        var consentBox1 = document.getElementById('consentBox1');
+        var consentError1 = document.getElementById('consentError1');
 
-        // Allow only digits in CRM number field
         fieldCrmNum.addEventListener('input', function() {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
 
-        // Check returning user
         var lastUser = localStorage.getItem('evento_slido_current_user');
         if (lastUser) {
             try {
@@ -532,7 +561,6 @@
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             var valid = true;
-
             if (!fieldName.value.trim()) { fieldName.classList.add('error'); valid = false; }
             else { fieldName.classList.remove('error'); }
             var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -540,21 +568,23 @@
             if (!emailRe.test(fieldEmail.value.trim())) { fieldEmail.classList.add('error'); valid = false; }
             else { fieldEmail.classList.remove('error'); }
 
-            // CRM validation
             var crmValid = true;
             if (!fieldCrmUf.value) { fieldCrmUf.classList.add('error'); crmValid = false; }
             else { fieldCrmUf.classList.remove('error'); }
             if (!fieldCrmNum.value.trim()) { fieldCrmNum.classList.add('error'); crmValid = false; }
             else { fieldCrmNum.classList.remove('error'); }
-            if (!crmValid) {
-                crmError.classList.add('visible');
+            if (!crmValid) { crmError.classList.add('visible'); valid = false; }
+            else { crmError.classList.remove('visible'); }
+
+            if (!consentPrivacy.checked) {
+                consentBox1.classList.add('error');
+                consentError1.classList.add('visible');
                 valid = false;
             } else {
-                crmError.classList.remove('visible');
+                consentBox1.classList.remove('error');
+                consentError1.classList.remove('visible');
             }
 
-            if (!consentCheck.checked) { consentBox.classList.add('error'); valid = false; }
-            else { consentBox.classList.remove('error'); }
             if (!valid) return;
 
             var crmFull = 'CRM/' + fieldCrmUf.value + ' ' + fieldCrmNum.value.trim();
@@ -563,7 +593,8 @@
                 name: fieldName.value.trim(),
                 email: fieldEmail.value.trim(),
                 crm: crmFull,
-                consent: true,
+                consent_privacy: true,
+                consent_communication: consentComm.checked,
                 timestamp: new Date().toISOString(),
                 interactions: []
             };
@@ -588,7 +619,10 @@
             f.addEventListener('input', function() { f.classList.remove('error'); });
         });
         fieldCrmUf.addEventListener('change', function() { fieldCrmUf.classList.remove('error'); });
-        consentCheck.addEventListener('change', function() { consentBox.classList.remove('error'); });
+        consentPrivacy.addEventListener('change', function() {
+            consentBox1.classList.remove('error');
+            consentError1.classList.remove('visible');
+        });
 
         function showConfirmView(user, isReturning) {
             viewRegister.classList.remove('active');
@@ -651,12 +685,14 @@
         }
         window.showToast = showToast;
 
-        window.openPrivacy = function() { document.getElementById('privacyOverlay').classList.add('active'); };
-        window.closePrivacy = function() { document.getElementById('privacyOverlay').classList.remove('active'); };
-        document.getElementById('privacyOverlay').addEventListener('click', function(e) {
-            if (e.target === this) window.closePrivacy();
+        // Info modal (Saiba mais)
+        window.openInfoModal = function() { document.getElementById('infoOverlay').classList.add('active'); };
+        window.closeInfoModal = function() { document.getElementById('infoOverlay').classList.remove('active'); };
+        document.getElementById('infoOverlay').addEventListener('click', function(e) {
+            if (e.target === this) window.closeInfoModal();
         });
 
+        // Password Modal
         function openPasswordModal() {
             var overlay = document.getElementById('passwordOverlay');
             overlay.classList.add('active');
@@ -744,13 +780,16 @@
             var today = new Date().toISOString().slice(0, 10);
             document.getElementById('statTotal').textContent = db.length;
             document.getElementById('statToday').textContent = db.filter(function(r) { return r.timestamp.slice(0,10) === today; }).length;
-            document.getElementById('statConsent').textContent = db.filter(function(r) { return r.consent; }).length;
+            document.getElementById('statPrivacy').textContent = db.filter(function(r) { return r.consent_privacy || r.consent; }).length;
+            document.getElementById('statComm').textContent = db.filter(function(r) { return r.consent_communication; }).length;
             tbody.innerHTML = '';
             db.forEach(function(r, i) {
                 var tr = document.createElement('tr');
                 var dt = new Date(r.timestamp);
                 var fd = dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR');
-                tr.innerHTML = '<td>'+(i+1)+'</td><td>'+escapeHTML(r.name)+'</td><td>'+escapeHTML(r.email)+'</td><td>'+escapeHTML(r.crm)+'</td><td>'+(r.consent ? 'Sim' : 'Nao')+'</td><td>'+fd+'</td>';
+                var cp = (r.consent_privacy || r.consent) ? 'Sim' : 'Nao';
+                var cc = r.consent_communication ? 'Sim' : 'Nao';
+                tr.innerHTML = '<td>'+(i+1)+'</td><td>'+escapeHTML(r.name)+'</td><td>'+escapeHTML(r.email)+'</td><td>'+escapeHTML(r.crm)+'</td><td>'+cp+'</td><td>'+cc+'</td><td>'+fd+'</td>';
                 tbody.appendChild(tr);
             });
         }
@@ -758,10 +797,12 @@
             var db = getDB();
             if (db.length === 0) { showToast('Nenhum registro para exportar.'); return; }
             var BOM = '﻿';
-            var headers = ['#','Nome Completo','E-mail','CRM','Consentimento','Data/Hora Registro','Interacoes'];
+            var headers = ['#','Nome Completo','E-mail','CRM','Consentimento Privacidade','Consentimento Comunicacao','Data/Hora Registro','Interacoes'];
             var rows = db.map(function(r, i) {
                 var inter = (r.interactions || []).map(function(x) { return x.type + ' (' + x.timestamp + ')'; }).join('; ');
-                return [i+1, '"'+r.name+'"', '"'+r.email+'"', '"'+r.crm+'"', r.consent?'Sim':'Nao', '"'+new Date(r.timestamp).toLocaleString('pt-BR')+'"', '"'+inter+'"'].join(',');
+                var cp = (r.consent_privacy || r.consent) ? 'Sim' : 'Nao';
+                var cc = r.consent_communication ? 'Sim' : 'Nao';
+                return [i+1, '"'+r.name+'"', '"'+r.email+'"', '"'+r.crm+'"', cp, cc, '"'+new Date(r.timestamp).toLocaleString('pt-BR')+'"', '"'+inter+'"'].join(',');
             });
             var csv = BOM + headers.join(',') + '\n' + rows.join('\n');
             var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
